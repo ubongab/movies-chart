@@ -3,6 +3,8 @@ This CLI app gets the top 250 movies of all time from imdb.com and the top 100 m
 
 ## Screenshots
 ![Menu ](./imgs/menu.png)
+
+
 ![Top 10 Movies on IMDB](./imgs/option1_top10_imdb.png)
 
 
