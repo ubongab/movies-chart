@@ -1,6 +1,7 @@
 import sys
 from classes import AppManager
 
+
 def run_app():
 
     app = AppManager()
@@ -18,13 +19,16 @@ def run_app():
             app.show_random_movie('imdb')
         elif int(user_input) == 5:
             app.show_random_movie('rt')
-        
-        
+        elif int(user_input) == 6:
+            app.show_movie_each_year()
+        elif int(user_input) == 7:
+            app.show_year_count()
         elif int(user_input) == 8:
             sys.exit()
     except ValueError as e:
         print('Invalid input, enter a number')
-        
+
+
 if __name__ == '__main__':
     while True:
         run_app()
