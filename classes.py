@@ -95,13 +95,15 @@ class AppManager(Movies):
 
             elif source.lower() == 'imdb':
                 selected = random.choice(self.movies250)
-                print('\n-------------------------------------\n')
+                print('\nRandom Movie from IMDB')
+                print('---------------------------------------\n')
                 print(f"{selected['title']} ({selected['year']})")
                 print('\n-------------------------------------')
 
             elif source.lower() == 'rt':
                 selected = random.choice(self.movies100)
-                print('\n-------------------------------------\n')
+                print('\nRandom Movie from Rotten Tomatoes')
+                print('---------------------------------------\n')
                 print(f"{selected['title']} ({selected['year']})")
                 print('\n-------------------------------------')
 
@@ -117,12 +119,10 @@ class AppManager(Movies):
         year_result = []
         try:
             selected_year = int(input('Enter a year (YYYY): '))
-            for k in self.get_all_movies_imdb():
-                if k['year'] == selected_year:
-                    year_result.append(k['title'])
-            for k in self.get_all_movies_rotten_tomatoes():
-                if k['year'] == selected_year:
-                    year_result.append(k['title'])
+            [year_result.append(k['title']) for k in self.get_all_movies_imdb(
+            ) if k['year'] == selected_year]
+            [year_result.append(k['title']) for k in self.get_all_movies_rotten_tomatoes(
+            ) if k['year'] == selected_year]
             print('\n--------------------------------------------')
             print(
                 f'Total movies in both sources for {selected_year}')
@@ -130,25 +130,18 @@ class AppManager(Movies):
             for ind, y in enumerate(year_result):
                 print(f'{ind+1}. {y}')
             print('--------------------------------------------')
-
-        except ValueError as e:
+        except ValueError:
             print('Invalid input')
 
     def show_year_count(self):
         movs_db = dict()
         movs_rt = dict()
-        for i in self.movies250:  # m.get_movies():
-            movs_db.update({i['title']: i['year']})
-        for i in self.movies100:  # m.get_movies_rotten_tomatoes():
-            movs_rt.update({i['title']: i['year']})
-        temp_db = dict(Counter(movs_db.values()))
-        temp_rt = dict(Counter(movs_rt.values()))
-        combined = temp_db.copy()
-        for k, v in temp_rt.items():
-            if k not in combined.keys():
-                combined.update({k: v})
-            else:
-                combined[k] = temp_rt[k]+temp_rt[k]
+
+        [movs_db.update({i['title']: i['year']}) for i in self.movies250]
+        [movs_rt.update({i['title']: i['year']}) for i in self.movies100]
+        temp_db = Counter(movs_db.values())
+        temp_rt = Counter(movs_rt.values())
+        combined = temp_db + temp_rt  # Combine both Counter results
 
         results = sorted(zip(combined.values(), combined.keys()), reverse=True)
         final_results = [{i[1]: i[0]} for i in results]
